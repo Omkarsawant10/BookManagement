@@ -26,6 +26,7 @@ export const getSingleBook = async (req, res) => {
     try {
         const { id } = req.params; // Extract book ID from request parameters
         const book = await Book.findById(id); // Find book by ID
+        if (!book) return res.status(404).json({ message: 'Book not present' }); //error message if book not present
         return res.status(200).json(book); // Respond with the found book
     } catch (error) {
         console.log(error); // Log any errors
@@ -36,8 +37,9 @@ export const getSingleBook = async (req, res) => {
 export const updateBook = async (req, res) => {
     try {
         const { id } = req.params; // Extract book ID from request parameters
-        const book = await Book.findByIdAndUpdate(id, req.body, { new: true }); // Update book and return the updated document
-        return res.status(200).json(book); // Respond with the updated book
+        const updatedBook = await Book.findByIdAndUpdate(id, req.body, { new: true }); // Update book and return the updated document
+        if (!updatedBook) return res.status(404).json({ message: 'Book not present' }); //error message if book not present
+        return res.status(200).json(updatedBook); // Respond with the updated book
     } catch (error) {
         console.log(error); // Log any errors
     }
@@ -47,7 +49,8 @@ export const updateBook = async (req, res) => {
 export const deleteBook = async (req, res) => {
     try {
         const { id } = req.params; // Extract book ID from request parameters
-        const book = await Book.findByIdAndDelete(id); // Delete book by ID
+        const deletedBook = await Book.findByIdAndDelete(id); // Delete book by ID
+        if (!deleteBook) return res.status(404).json({ message: 'Book not present' }); //error message if book not present
         return res.status(200).json({ message: "Book Deleted Successfully" }); // Respond with success message
     } catch (error) {
         console.log(error); // Log any errors
